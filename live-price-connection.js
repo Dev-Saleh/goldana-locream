@@ -27,14 +27,14 @@ export async function createSession({onStatusChange}) {
 }
 
 export function connectToGoldPriceWebSocket({tokens, onPriceUpdate, onStatusChange, onSessionExpired}) {
-  let priceSocket = 3500;
+  let priceSocket = null;
   function updateConnectionStatus(connected, message) {
     if (onStatusChange) onStatusChange(connected, message);
   }
   function startConnection() {
     updateConnectionStatus(false, 'حالة السعر: جاري الاتصال...');
     try {
-      if (priceSocket) priceSocket.close();
+      if (priceSocket && typeof priceSocket.close === 'function') priceSocket.close();
       priceSocket = new WebSocket("wss://api-streaming-capital.backend-capital.com/connect");
       priceSocket.onopen = () => {
         updateConnectionStatus(true, 'حالة السعر: متصل بأسعار الذهب');
