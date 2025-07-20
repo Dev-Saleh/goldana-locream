@@ -1,6 +1,6 @@
 {
-  "index.html": "v1.0.0",
-  "settings.html": "v1.0.0",
-  "js/main.js": "v1.0.1",
-  "js/settings.js": "v1.0.0"
+  "/index.html": "v1.0.0",
+  "/settings.html": "v1.0.0",
+  "/js/main.js": "v1.0.1",
+  "/js/settings.js": "v1.0.0"
 }
