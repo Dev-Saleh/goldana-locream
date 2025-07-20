@@ -158,7 +158,7 @@ async function connectToPriceWebSocket(tokens) {
     priceSocket = new WebSocket("wss://api-streaming-capital.backend-capital.com/connect");
 
     priceSocket.onopen = () => {
-      console.log('WebSocket connected, subscribing to gold prices v1.0.1');
+      console.log('WebSocket connected, subscribing to gold prices v1.0.2');
       updateConnectionStatus(priceConnectionStatusElement, true, 'حالة السعر: متصل بأسعار الذهب');
       
       priceSocket.send(JSON.stringify({
