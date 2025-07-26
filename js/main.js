@@ -1,5 +1,4 @@
 import { connectToWeightSocket } from './scaleConnection.js';
-// import { createSession, connectToGoldPriceWebSocket } from 'https://cdn.jsdelivr.net/gh/Dev-Saleh/goldnan-ltream@refs/heads/main/live-price-connection.js';
 import { checkGoldMarketStatus, connectToGoldPriceWebSocket, fetchTokensFromSupabase, checkSubscription } from './livePriceConnection.js';
 let selectedKarat = 18;
 let currentWeight = 10.00;
