@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إعدادات المصنعية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Modern Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap&subset=arabic" rel="stylesheet">
+  <style>
+  :root {
+  /* Base Colors */
+  --pure-white: #ffffff;
+  --pure-black: #000000;
+  --smoke: #f5f5f5;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Theme Variables - Light */
+  --background: var(--smoke);
+  --foreground: var(--gray-900);
+  --container-bg: var(--pure-white);
+  --border: var(--gray-200);
+  --border-width: 1px;
+  --radius: 18px;
+  
+  /* Inputs */
+  --input-bg: var(--gray-100);
+  --input-border: var(--gray-300);
+  --input-radius: 8px;
+  
+  /* Buttons */
+  --button-bg: var(--gray-800);
+  --button-color: var(--pure-white);
+  --button-hover-bg: var(--gray-700);
+  --button-hover-color: var(--pure-white);
+  
+  /* Visual Effects */
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --transition: 0.18s cubic-bezier(.4,0,.2,1);
+  
+  /* Accents */
+  --accent: var(--gray-600);
+  --accent-hover: var(--gray-500);
+  
+  /* Background Effects */
+  --bg-overlay: radial-gradient(at 80% 20%, rgba(214, 219, 220, 0.3) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(229, 231, 235, 0.3) 0px, transparent 50%);
+  --backdrop-filter: blur(20px);
+}
+
+.dark-theme {
+  /* Theme Variables - Dark */
+  --background: var(--gray-900);
+  --foreground: var(--gray-100);
+  --container-bg: var(--gray-800);
+  --border: var(--gray-700);
+  
+  /* Inputs */
+  --input-bg: var(--gray-800);
+  --input-border: var(--gray-700);
+  
+  /* Buttons */
+  --button-bg: var(--gray-600);
+  --button-color: var(--pure-white);
+  --button-hover-bg: var(--gray-500);
+  --button-hover-color: var(--pure-white);
+  
+  /* Visual Effects */
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  
+  /* Background Effects */
+  --bg-overlay: radial-gradient(at 80% 20%, rgba(31, 41, 55, 0.7) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(55, 65, 81, 0.7) 0px, transparent 50%);
+}
+
+/* Settings Page Specific Styles */
+.settings-container {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  width: 80%;
+  margin: 2rem auto;
+  backdrop-filter: var(--backdrop-filter);
+  background-image: var(--bg-overlay);
+  overflow-y: auto;
+}
+
+.dark-theme .settings-container {
+  background-color: rgba(31, 41, 55, 0.92);
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+/* Interactive Elements */
+button, .toggle-switch {
+  background-color: var(--button-bg);
+  color: var(--button-color);
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--input-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: var(--button-hover-bg);
+  transform: translateY(-1px);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background-color: var(--gray-300);
+  border-radius: 13px;
+}
+
+.toggle-switch:after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: var(--pure-white);
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: var(--transition);
+}
+
+input[type="checkbox"]:checked + .toggle-switch {
+  background-color: var(--gray-600);
+}
+
+input[type="checkbox"]:checked + .toggle-switch:after {
+  left: calc(100% - 24px);
+}
+    html, body {
+      height: 100%;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--background);
+      color: var(--foreground);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      min-width: 100vw;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transition: background var(--transition), color var(--transition);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 18px;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .actions button {
+      padding: 10px 28px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--button-bg);
+      color: var(--button-color);
+      font-size: 1.08rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+      transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+    .actions button:hover {
+      background: var(--button-hover-bg);
+      color: var(--button-hover-color);
+      box-shadow: 0 4px 16px rgba(251,191,36,0.13);
+    }
+    .section {
+      margin-bottom: 0;
+      padding: 18px 12px;
+      border-radius: var(--radius);
+      background: var(--input-bg);
+      border: var(--border-width) solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      flex-shrink: 0;
+      transition: background var(--transition), color var(--transition);
+    }
+    .section-title {
+      font-size: 1.13rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--accent);
+      letter-spacing: 0.2px;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .input-group label {
+      min-width: 150px;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    .input-group input[type="number"] {
+      width: 90px;
+      padding: 7px 10px;
+      border-radius: var(--input-radius);
+      border: var(--border-width) solid var(--input-border);
+      background: #fff;
+      color: var(--foreground);
+      font-size: 1rem;
+      transition: border var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .input-group input[type="number"]:focus {
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+    }
+    .karat-ranges {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .karat-section {
+      width: 100%;
+      background: var(--container-bg);
+      border-radius: var(--radius);
+      border: var(--border-width) solid var(--border);
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      transition: background var(--transition), color var(--transition);
+    }
+    .karat-header {
+      font-size: 1.08rem;
+      font-weight: 700;
+      padding: 14px 12px;
+      background: var(--input-bg);
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: var(--border-width) solid var(--border);
+      user-select: none;
+      transition: background var(--transition), color var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .karat-header:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .chevron {
+      display: inline-block;
+      transition: transform var(--transition);
+      font-size: 22px;
+      margin-right: 8px;
+      color: inherit;
+    }
+    .collapsible.expanded .chevron {
+      transform: rotate(90deg);
+    }
+    .karat-content {
+      display: none;
+      padding: 16px 10px 10px 10px;
+      background: var(--container-bg);
+      font-size: 1rem;
+      border-radius: 0 0 var(--radius) var(--radius);
+      transition: background var(--transition), color var(--transition);
+    }
+    .collapsible.expanded .karat-content {
+      display: block;
+      animation: fadeIn 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .design-tabs-container {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .design-tab {
+      padding: 7px 18px;
+      border-radius: 8px 8px 0 0;
+      background: var(--input-bg);
+      color: var(--accent);
+      border: var(--border-width) solid var(--accent);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border var(--transition);
+      position: relative;
+      user-select: none;
+      display: flex;
+      align-items: center;
+    }
+    .design-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-bottom: 2px solid var(--container-bg);
+      z-index: 2;
+    }
+    .design-tab .remove-design-btn {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background: transparent;
+      border: none;
+      color: #dc2626;
+      font-size: 1.1em;
+      cursor: pointer;
+      padding: 0 4px;
+      z-index: 3;
+    }
+    .add-design-tab {
+      padding: 7px 14px;
+      border-radius: 8px 8px 0 0;
+      border: var(--border-width) dashed var(--accent);
+      background: var(--input-bg);
+      color: var(--accent);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 8px;
+      transition: background var(--transition), color var(--transition), border var(--transition);
+    }
+    .add-design-tab:hover, .add-design-tab:focus {
+      background: var(--accent-hover);
+      color: #fff;
+      outline: none;
+    }
+    .range-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+      background: var(--input-bg);
+      border-radius: 7px;
+      padding: 7px 8px;
+      transition: background var(--transition);
+      border: 1px solid var(--input-border);
+    }
+    .range-row input {
+      width: 60px;
+      padding: 5px 8px;
+      border-radius: var(--input-radius);
+      border: var(--border-width) solid var(--input-border);
+      background: #fff;
+      color: var(--foreground);
+      font-size: 1rem;
+      transition: border var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .range-row input:focus {
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+    }
+    .range-row button {
+      padding: 4px 10px;
+      border-radius: var(--input-radius);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background var(--transition), color var(--transition);
+    }
+    .range-row button:hover {
+      background: var(--accent-hover);
+      color: #fff;
+    }
+    .add-range-btn {
+      margin-top: 6px;
+      padding: 10px 0;
+      border-radius: var(--input-radius);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: background var(--transition), color var(--transition);
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .add-range-btn:hover, .add-range-btn:focus {
+      background: var(--accent-hover);
+      color: #fff;
+      outline: none;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      background: var(--container-bg);
+      border: var(--border-width) solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 22px;
+      color: var(--accent);
+      box-shadow: 0 2px 6px var(--border);
+      transition: background var(--transition), color var(--transition);
+      z-index: 999;
+    }
+    .theme-toggle:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .settings-container { max-width: 100vw; padding: 10px 2vw; }
+      .section { padding: 10px 2vw; }
+      .karat-header { padding: 10px 4vw; }
+      .karat-content { padding: 10px 2vw; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle" title="تبديل الوضع الداكن/الفاتح">🌙</button>
+  <div class="settings-container">
+    <h1>إعدادات النظام</h1>
+    <div class="actions">
+      <button onclick="saveSettings()">حفظ الإعدادات</button>
+      <button onclick="window.location.href='/index.html'">العودة للرئيسية</button>
+    </div>
+    <div class="section">
+      <div class="section-title">إعدادات الشراء والبيع</div>
+      <div class="input-group">
+        <label for="buy-discount">خصم الشراء (بالريال لكل جرام):</label>
+        <input type="number" id="buy-discount" value="20" min="0" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="fluctuation-range">مدى تذبذب السعر (ريال):</label>
+        <input type="number" id="fluctuation-range" value="1" min="0" step="0.1">
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">إعدادات المصنعية لكل عيار</div>
+      <div class="karat-ranges">
+        <div id="karat-18" class="karat-section collapsible expanded">
+          <div class="karat-header" onclick="toggleKaratSection(18)"><span>عيار 18</span><span class="chevron">▶</span></div>
+          <div class="karat-content">
+            <div class="design-tabs-container" id="design-tabs-18"></div>
+            <div id="ranges-18"></div>
+            <button class="add-range-btn" id="add-range-18" onclick="addRange(18)">➕ إضافة مدى</button>
+          </div>
+        </div>
+        <div id="karat-21" class="karat-section collapsible">
+          <div class="karat-header" onclick="toggleKaratSection(21)"><span>عيار 21</span><span class="chevron">▶</span></div>
+          <div class="karat-content">
+            <div class="design-tabs-container" id="design-tabs-21"></div>
+            <div id="ranges-21"></div>
+            <button class="add-range-btn" id="add-range-21" onclick="addRange(21)">➕ إضافة مدى</button>
+          </div>
+        </div>
+        <div id="karat-24" class="karat-section collapsible">
+          <div class="karat-header" onclick="toggleKaratSection(24)"><span>عيار 24</span><span class="chevron">▶</span></div>
+          <div class="karat-content">
+            <div class="design-tabs-container" id="design-tabs-24"></div>
+            <div id="ranges-24"></div>
+            <button class="add-range-btn" id="add-range-24" onclick="addRange(24)">➕ إضافة مدى</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="js/settings.js"></script>
+  <script>
+    // Theme toggle logic
+    const themeToggle = document.getElementById('theme-toggle');
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    // Initial theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') setTheme('dark');
+    else setTheme('light');
+    themeToggle.addEventListener('click', function() {
+      if (document.documentElement.classList.contains('dark-theme')) {
+        setTheme('light');
+      } else {
+        setTheme('dark');
+      }
+    });
+    function toggleKaratSection(karat) {
+      document.querySelectorAll('.karat-section.collapsible').forEach(function(section) {
+        section.classList.remove('expanded');
+      });
+      document.getElementById('karat-' + karat).classList.add('expanded');
+    }
+  </script>
+</body>
+</html>
