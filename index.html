@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark-theme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#d4af37">
+  
+  <meta id="device-mac" name="device-mac" content="6C:C8:40:8A:F7:4C">
+  
+  <!-- لدعم iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- <link rel="apple-touch-icon" href="/icons/icon-192.png"> -->
+
+  <title>حاسبة الذهب المباشرة</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap&subset=arabic');
+
+    :root {
+  --background: #f8f9fa; /* smoke-like */
+  --foreground: #222; /* near black */
+  --container-bg: #fff; /* white */
+  --border: rgba(0,0,0,0.08);
+  --border-width: 1px;
+  
+  /* Karat colors - using gray shades */
+  --karat-bg: #f3f4f6; /* light gray */
+  --karat-active-bg: #e5e7eb; /* medium gray */
+  --karat-border: rgba(156, 163, 175, 0.5); /* gray-400 */
+  --karat-active-border: rgba(75, 85, 99, 0.5); /* gray-600 */
+  --karat-color: #374151; /* gray-700 */
+  --karat-active-color: #4b5563; /* gray-600 */
+  
+  /* Button colors */
+  --button-bg: #f9fafb; /* very light gray */
+  --button-color: #1f2937; /* dark gray */
+  --button-border: rgba(209, 213, 219, 0.5); /* gray-300 */
+  --button-active-bg: #e5e7eb; /* medium gray */
+  --button-active-color: #111827; /* near black */
+  --button-active-border: rgba(107, 114, 128, 0.5); /* gray-500 */
+  
+  /* Status colors */
+  --status-connected: #10B981; /* keeping green for status */
+  --status-disconnected: #F43F5E; /* keeping red for status */
+  
+  /* Price colors */
+  --price-up: #10B981; /* keeping green for up */
+  --price-down: #F43F5E; /* keeping red for down */
+  --price-placeholder: #9ca3af; /* gray-400 */
+  
+  /* Other colors */
+  --weight-color: #1d4ed8; /* keeping blue for weight */
+  --gold-price: #4b5563; /* gray-600 */
+  --unit-color: #6b7280; /* gray-500 */
+}
+
+.dark-theme {
+  --background: #18191a; /* near black */
+  --foreground: #f3f4f6; /* light gray */
+  --container-bg: #23272f; /* dark gray */
+  --border: rgba(255,255,255,0.08);
+  
+  /* Karat colors */
+  --karat-bg: #23272f; /* dark gray */
+  --karat-active-bg: #2d323c; /* slightly lighter dark gray */
+  --karat-border: rgba(255,255,255,0.2);
+  --karat-active-border: rgba(255,255,255,0.5);
+  --karat-color: #d1d5db; /* light gray */
+  --karat-active-color: #e5e7eb; /* lighter gray */
+  
+  /* Button colors */
+  --button-bg: #23272f; /* dark gray */
+  --button-color: #e5e7eb; /* light gray */
+  --button-border: rgba(255,255,255,0.2);
+  --button-active-bg: #18191a; /* near black */
+  --button-active-color: #f9fafb; /* very light gray */
+  --button-active-border: rgba(255,255,255,0.5);
+  
+  /* Status colors - same as light theme for consistency */
+  --status-connected: #10B981;
+  --status-disconnected: #F43F5E;
+  
+  /* Price colors - same as light theme */
+  --price-up: #10B981;
+  --price-down: #F43F5E;
+  --price-placeholder: #6b7280; /* gray-500 */
+  
+  /* Other colors */
+  --weight-color: #60a5fa; /* lighter blue */
+  --gold-price: #d1d5db; /* light gray */
+  --unit-color: #9ca3af; /* gray-400 */
+}
+    html, body {
+      height: 100%;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+ body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    transition: background 0.3s, color 0.3s;
+    box-sizing: border-box;
+    
+    /* الخلفية الجديدة مع تأثير Blur */
+    background-image: 
+        radial-gradient(at 80% 20%, hsla(189, 100%, 90%, 0.2) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.2) 0px, transparent 50%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    /* لون خلفية شبه شفاف */
+    background-color: rgba(248, 249, 250, 0.85);
+}
+  .dark-theme body {
+    background-image: 
+        radial-gradient(at 80% 20%, hsla(217, 32%, 17%, 0.7) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(215, 28%, 17%, 0.7) 0px, transparent 50%);
+    background-color: rgba(24, 25, 26, 0.9);
+}
+    .main-container {
+      width: 100vw;
+      max-width: 1000px;
+      min-height: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      margin-top: 12px;
+    }
+    .karat-container {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 10px;
+      flex-direction: row-reverse;
+    }
+    .karat-box {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      border: var(--border-width) solid var(--karat-border);
+      font-weight: bold;
+      color: var(--karat-color);
+      transition: all 0.3s;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    .karat-box.active {
+      border-width: 2px;
+      border-color: var(--karat-active-border);
+      background-color: var(--karat-active-bg);
+      color: var(--karat-active-color);
+    }
+    .price-display, .weight-display {
+      background-color: var(--container-bg);
+      border-radius: 12px;
+      padding: 14px 6px;
+      margin-bottom: 12px;
+      border: var(--border-width) solid var(--border);
+      transition: background 0.3s, color 0.3s, border 0.3s;
+      width: 100%;
+      max-width: 70%;
+      box-sizing: border-box;
+      justify-items: center;
+    }
+    .current-weight {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--weight-color);
+      margin: 8px 0;
+    }
+    .label {
+      color: var(--unit-color);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .unit {
+      color: var(--unit-color);
+      font-size: 1rem;
+    }
+    .connection-status {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .connection-status.connected {
+      color: var(--status-connected);
+    }
+    .connection-status.disconnected {
+      color: var(--status-disconnected);
+    }
+    .gold-price {
+      margin-top: 6px;
+      font-size: 0.97rem;
+      color: var(--gold-price);
+    }
+    .status-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 10px;
+      column-gap: 5px;
+      max-width: 420px;
+    }
+    .status-box {
+      width: 48%;
+      padding: 7px;
+      border-radius: 8px;
+      font-size: 13px;
+      border: var(--border-width) solid var(--border);
+      background: var(--container-bg);
+      transition: background 0.3s, color 0.3s, border 0.3s;
+    }
+    .zero-weight {
+      color: var(--price-placeholder);
+    }
+    .price-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Tajawal', sans-serif;
+      gap: 6px;
+      margin: 8px 0;
+    }
+    .pricee {
+      font-weight: 500 !important;
+      font-size: 4rem !important;
+      margin: 0 !important;
+      transition: color 0.3s ease;
+    }
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      transition: all 0.3s ease;
+    }
+    .up {
+      color: var(--price-up);
+    }
+    .down {
+      color: var(--price-down);
+    }
+    .curencyy {
+      margin-right: 3px;
+      transition: color 0.3s ease;
+    }
+    .curencyy svg {
+      width: 2.5rem;
+      height: 2.5rem;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+    .price-placeholder {
+      font-size: 4.5rem;
+      font-weight: 500;
+      color: var(--price-placeholder);
+    }
+    .mode-toggle-container {
+      width: 70%;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .mode-toggle {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      padding: 7px 18px;
+      width: 80%;
+      border: var(--border-width) solid var(--button-border);
+      background: var(--button-bg);
+      color: var(--button-color);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      outline: none;
+    }
+    .mode-toggle.active {
+      background: var(--button-active-bg);
+      color: var(--button-active-color);
+      border: var(--border-width) solid var(--button-active-border);
+    }
+    .settings-button {
+      position: absolute;
+      top: 12px;
+      left: 18px;
+      background-color: var(--container-bg);
+      border: var(--border-width) solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 18px;
+      color: var(--gold-price);
+      box-shadow: 0 2px 6px var(--border);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      z-index: 999;
+    }
+    .settings-button:hover {
+      background-color: var(--karat-bg);
+      color: var(--karat-color);
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      background: var(--container-bg);
+      border: var(--border-width) solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--gold-price);
+      /* box-shadow: 0 2px 6px var(--border); */
+      transition: background 0.2s, color 0.2s;
+      z-index: 999;
+    }
+    .theme-toggle:hover {
+      background: var(--karat-bg);
+      color: var(--karat-color);
+    }
+    .design-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 18px;
+      width: 100%;
+      max-width: 420px;
+    }
+    .design-select {
+      width: 100%;
+      padding: 10px 8px;
+      border-radius: 8px;
+      border: var(--border-width) solid var(--border);
+      font-size: 1.2rem;
+      margin-top: 6px;
+      background: var(--container-bg);
+      color: var(--foreground);
+      box-sizing: border-box;
+      outline: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .design-select:focus {
+      border-color: var(--karat-active-border);
+    }
+    .design-type-container {
+      width: 50%; 
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+    .design-type-box {
+      width: 50%;
+      height: 44px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      border: var(--border-width) solid var(--karat-border);
+      font-weight: bold;
+      color: var(--karat-color);
+      background: var(--karat-bg);
+      transition: all 0.3s;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    .design-type-box.active {
+      border-width: 2px;
+      border-color: var(--karat-active-border);
+      background-color: var(--karat-active-bg);
+      color: var(--karat-active-color);
+    }
+    /* Remove FAB styles, make manual-weight button standard */
+    .manual-weight-fab {
+      background: linear-gradient(90deg, #fde68a 60%, #fffbe8 100%);
+      color: #92400e;
+      border: none;
+      border-radius: 14px;
+      /* box-shadow: 0 2px 8px rgba(251,191,36,0.10); */
+      padding: 10px 18px;
+      font-size: 1.05rem;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      outline: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      position: static;
+      left: unset;
+      top: unset;
+      transform: none;
+      z-index: auto;
+      white-space: nowrap;
+    }
+    .manual-weight-fab:hover {
+      background: linear-gradient(90deg, #fde68a 80%, #fffbe8 100%);
+      color: #d97706;
+      box-shadow: 0 4px 16px rgba(251,191,36,0.15);
+    }
+    /* Modal styles */
+    .manual-weight-modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(2px);
+    }
+    .manual-weight-modal-content {
+      background: var(--container-bg);
+      padding: 32px 24px 24px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+      min-width: 260px;
+      max-width: 90vw;
+      text-align: center;
+      position: relative;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .manual-weight-modal-close {
+      position: absolute;
+      top: 10px;
+      left: 16px;
+      font-size: 1.7em;
+      color: #d97706;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+    .manual-weight-modal-close:hover {
+      color: #92400e;
+    }
+    .manual-weight-modal-save {
+      background: #fde68a;
+      color: #92400e;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 28px;
+      font-size: 1.1em;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .manual-weight-modal-save:hover {
+      background: #fffbe8;
+      color: #d97706;
+    }
+    /* After manual-weight weight display */
+    .weight-display.after-manual-weight {
+      background: #ffffff;
+      border: 1.5px solid #dadada;
+      margin-bottom: 0;
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+      
+    }
+    .weight-row-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 14px;
+     width: 70%;
+    
+      margin-bottom: 0;
+    }
+    .weight-row-container .weight-display {
+      flex: 1 1 0;
+      max-width: 100%;
+      margin-bottom: 0;
+      justify-items: center;
+    }
+   
+    @media (max-width: 800px) {
+      .weight-row-container {
+        max-width: 100%;
+      }
+    }
+    @media (max-width: 600px) {
+      .weight-row-container {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+    }
+    /* REMOVE .detail-box styles */
+    .detail-value {
+      font-weight: bold;
+      color: #d97706;
+      font-size: 1.1em;
+      margin-right: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a href="/settings.html" class="settings-button" title="الإعدادات">
+    ❕
+  </a>
+  <button id="toggle-details-btn" class="settings-button" title="إظهار التفاصيل" style="position:absolute;top:18px;right:60px;left:auto;display:none;z-index:10;">
+    <span id="toggle-details-icon">❔</span>
+  </button>
+  <div class="main-container">
+  
+    <h1>حاسبة الذهب المباشرة</h1>
+
+ 
+
+    <div class="karat-container">
+      <div id="karat-24" class="karat-box" onclick="selectKarat(24)">24</div>
+      <div id="karat-21" class="karat-box" onclick="selectKarat(21)">21</div>
+      <div id="karat-18" class="karat-box active" onclick="selectKarat(18)">18</div>
+    </div>
+    <div class="design-type-container" id="design-type-container"></div>
+
+    <div class="price-display">
+      <div class="label">سعر القطعة مباشرة</div>
+      <div id="price-indicator" class="price-indicator">
+        <span class="arrow" id="price-arrow">-</span>
+        <span id="price-value" class="price-placeholder">--.--</span>
+        <span class="curencyy" id="price-currency">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39">
+            <path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"/>
+            <path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Weight displays and manual-weight discount button in a single row -->
+    <div class="weight-row-container" id="weight-row-container">
+      <div class="weight-display">
+        <div class="label" id="weight-label" style="cursor:pointer;">وزن القطعة <span id="weight-mode-icon">⚖️</span></div>
+        <div id="current-weight" class="current-weight" style="cursor:pointer;" title="إدخال الوزن يدويًا">0.00</div>
+        <div class="unit">جرام</div>
+      </div>
+      <!-- Remove the stone deduction display box -->
+      <div class="weight-display" id="net-gold-weight-display" style="display:none;">
+        <div class="label">وزن الذهب بعد خصم الأحجار</div>
+        <div id="net-gold-weight-value" class="current-weight" style="cursor:pointer;" title="إدخال وزن الأحجار يدويًا">0.00</div>
+        <div class="unit">جرام</div>
+      </div>
+    
+      <div class="weight-display" id="detail-cost-per-gram" style="display:none;">
+        <div class="label">سعر الجرام</div>
+        <div class="current-weight" id="cost-per-gram-detail">--</div>
+        <div class="unit">ر.س/جرام</div>
+      </div>
+      <div class="weight-display" id="detail-vat" style="display:none;">
+        <div class="label">الضريبة</div>
+        <div class="current-weight" id="vat-detail">--</div>
+        <div class="unit">ر.س</div>
+      </div>
+    </div>
+   
+    <!-- Modal for manual weight input -->
+    <div id="manual-weight-modal" class="manual-weight-modal" style="display:none;">
+      <div class="manual-weight-modal-content">
+        <span class="manual-weight-modal-close" id="manual-weight-modal-close">&times;</span>
+        <h3 style="margin-bottom:12px;">إدخال الوزن يدويًا (جرام)</h3>
+        <input type="number" id="manual-weight-input" min="0" step="0.01" style="width:120px; font-size:1.2em; padding:6px 10px; border-radius:8px; border:1px solid #eee; text-align:center;" placeholder="وزن القطعة">
+        <div style="margin-top:10px;">
+          <button id="manual-weight-modal-save" class="manual-weight-modal-save">حفظ</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal for stone deduction input -->
+    <div id="stone-deduction-modal" class="manual-weight-modal" style="display:none;">
+      <div class="manual-weight-modal-content">
+        <span class="manual-weight-modal-close" id="stone-deduction-modal-close">&times;</span>
+        <h3 style="margin-bottom:12px;">إدخال وزن الأحجار (جرام)</h3>
+        <input type="number" id="stone-deduction-input" min="0" step="0.01" style="width:120px; font-size:1.2em; padding:6px 10px; border-radius:8px; border:1px solid #eee; text-align:center;" placeholder="وزن الأحجار">
+        <div style="margin-top:10px;">
+          <button id="stone-deduction-modal-save" class="manual-weight-modal-save">حفظ</button>
+        </div>
+      </div>
+    </div>
+    <div class="status-container">
+      <div id="connection-status" class="status-box connection-status disconnected">حالة الميزان: جاري الاتصال...</div>
+      <div id="price-connection-status" class="status-box connection-status disconnected">حالة السعر: جاري الاتصال...</div>
+    </div>
+       <div class="mode-toggle-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px; gap: 20px;">
+      <button id="mode-sell" class="mode-toggle active">بيع</button>
+      <button id="mode-buy" class="mode-toggle">شراء</button>
+    </div>
+  </div>
+ <!-- Version number in bottom left corner -->
+  <div style="
+    position: fixed;
+    left: 8px;
+    bottom: 6px;
+    font-size: 0.85rem;
+    color: #888;
+    opacity: 0.7;
+    z-index: 9999;
+    font-family: 'Tajawal', sans-serif;
+    pointer-events: none;
+  ">
+    Version 1.0.0
+  </div>
+  <!-- <script type="module" src="js/script.js"></script> -->
+  <!-- <script type="module" src="js/app.js"></script> -->
+  <script type="module" src="js/main.js"></script>
+    
+  
+</body>
+</html>
