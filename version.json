@@ -4,5 +4,6 @@
   "/js/main.js": "v1.0.1",
   "/js/settings.js": "v1.0.1",
   "/js/scaleConnection.js": "v1.0.1",
-  "/js/livePriceConnection.js": "v1.0.1"
+  "/js/livePriceConnection.js": "v1.0.1",
+  "/js/utils.js": "v1.0.0"
 }
