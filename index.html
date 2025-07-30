@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark-theme">
+<html lang="ar" dir="rtl" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,10 @@
   --container-bg: #fff; /* white */
   --border: rgba(0,0,0,0.08);
   --border-width: 1px;
-  
+  --border-sell-mode: rgba(183, 212, 255, 0.5); 
+  --border-buy-mode: rgb(255, 178, 178); 
+  --border-dark-buy-mode: rgba(183, 212, 255, 0.5);
+  --border-dark-sell-mode: rgba(209, 213, 219, 0.5); 
   /* Karat colors - using gray shades */
   --karat-bg: #f3f4f6; /* light gray */
   --karat-active-bg: #e5e7eb; /* medium gray */
@@ -178,7 +181,19 @@
       background-color: var(--karat-active-bg);
       color: var(--karat-active-color);
     }
-    .price-display, .weight-display {
+    .price-display {
+      background-color: var(--container-bg);
+      border-radius: 12px;
+      padding: 14px 6px;
+      margin-bottom: 12px;
+      border: var(--border-width) solid var(--border);
+      transition: background 0.3s, color 0.3s, border 0.3s;
+      width: 100%;
+      max-width: 70%;
+      box-sizing: border-box;
+      justify-items: center;
+    }
+   .weight-display {
       background-color: var(--container-bg);
       border-radius: 12px;
       padding: 14px 6px;
@@ -195,6 +210,40 @@
       font-weight: bold;
       color: var(--weight-color);
       margin: 8px 0;
+    }
+    .weight-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      text-align: center;
+      width: auto;
+      min-width: 60px;
+      max-width: 100px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-family: 'Tajawal', sans-serif;
+      direction: ltr;
+      box-sizing: content-box;
+    }
+    .weight-input:focus {
+      background: transparent;
+    }
+    .weight-input:hover {
+      background: transparent;
+    }
+    .weight-input::placeholder {
+      color: var(--price-placeholder);
+      opacity: 0.7;
+    }
+    /* Remove spinner arrows for number input */
+    .weight-input::-webkit-outer-spin-button,
+    .weight-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .weight-input[type=number] {
+      appearance: textfield;
+      -moz-appearance: textfield;
     }
     .label {
       color: var(--unit-color);
@@ -223,10 +272,9 @@
     .status-container {
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      margin-bottom: 10px;
+      width: 70%;
       column-gap: 5px;
-      max-width: 420px;
+  
     }
     .status-box {
       width: 48%;
@@ -249,8 +297,8 @@
       margin: 8px 0;
     }
     .pricee {
-      font-weight: 500 !important;
-      font-size: 4rem !important;
+      font-weight: 600 !important;
+      font-size: 4.5rem !important;
       margin: 0 !important;
       transition: color 0.3s ease;
     }
@@ -378,14 +426,14 @@
     .design-select:focus {
       border-color: var(--karat-active-border);
     }
-    .design-type-container {
-      width: 50%; 
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 18px;
-      overflow-x: auto;
-    }
+   .design-type-container {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+}
     .design-type-box {
       width: 50%;
       height: 44px;
@@ -519,7 +567,30 @@
       margin-bottom: 0;
       justify-items: center;
     }
-   
+  
+
+.document-container{
+    width: 68%;
+    display: flex;
+    gap: 7rem;
+    justify-content: center;
+    background: var(--container-bg);
+    border: var(--border-width) solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+}
+.document-container div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 10px;
+}
+.document-container p{
+  color: #031613;
+   margin: 0;
+    text-align:center;
+}
     @media (max-width: 800px) {
       .weight-row-container {
         max-width: 100%;
@@ -532,25 +603,19 @@
       }
 
     }
-    /* REMOVE .detail-box styles */
-    .detail-value {
-      font-weight: bold;
-      color: #d97706;
-      font-size: 1.1em;
-      margin-right: 2px;
-    }
+  
   </style>
 </head>
 <body>
-  <a href="/settings.html" class="settings-button" title="الإعدادات">
-    ❕
-  </a>
-  <button id="toggle-details-btn" class="settings-button" title="إظهار التفاصيل" style="position:absolute;top:18px;right:60px;left:auto;display:none;z-index:10;">
-    <span id="toggle-details-icon">❔</span>
-  </button>
+ 
+  
   <div class="main-container">
   
-    <h1>حاسبة الذهب المباشرة</h1>
+    <h1>
+    <a href="/settings.html" style="color: #111827;" title="الإعدادات">
+        حاسبة الذهب المباشرة
+    </a>
+    </h1>
 
  
 
@@ -561,7 +626,7 @@
     </div>
     <div class="design-type-container" id="design-type-container"></div>
 
-    <div class="price-display">
+    <div id="mode-toggle" class="price-display">
       <div class="label">سعر القطعة مباشرة</div>
       <div id="price-indicator" class="price-indicator">
         <span class="arrow" id="price-arrow">-</span>
@@ -577,9 +642,9 @@
 
     <!-- Weight displays and manual-weight discount button in a single row -->
     <div class="weight-row-container" id="weight-row-container">
-      <div class="weight-display">
+      <div id="toggle-details" class="weight-display">
         <div class="label" id="weight-label" style="cursor:pointer;">وزن القطعة <span id="weight-mode-icon">⚖️</span></div>
-        <div id="current-weight" class="current-weight" style="cursor:pointer;" title="إدخال الوزن يدويًا">0.00</div>
+        <input type="number" id="current-weight" class="current-weight weight-input" min="0" step="0.001" value="0.00" title="إدخال الوزن يدويًا" placeholder="0.00">
         <div class="unit">جرام</div>
       </div>
       <!-- Remove the stone deduction display box -->
@@ -606,7 +671,7 @@
       <div class="manual-weight-modal-content">
         <span class="manual-weight-modal-close" id="manual-weight-modal-close">&times;</span>
         <h3 style="margin-bottom:12px;">إدخال الوزن يدويًا (جرام)</h3>
-        <input type="number" id="manual-weight-input" min="0" step="0.01" style="width:120px; font-size:1.2em; padding:6px 10px; border-radius:8px; border:1px solid #eee; text-align:center;" placeholder="وزن القطعة">
+        <input type="number" id="manual-weight-input" min="0" step="0.01" style="width:auto; font-size:1.2em; padding:6px 10px; border-radius:0px; border:none; text-align:center; background: transparent;" placeholder="وزن القطعة">
         <div style="margin-top:10px;">
           <button id="manual-weight-modal-save" class="manual-weight-modal-save">حفظ</button>
         </div>
@@ -623,31 +688,59 @@
         </div>
       </div>
     </div>
-    <div class="status-container">
+
+    
+    <div id="toggle-status" class="status-container">
+      <div id="subscribtion-status" class="status-box connection-status disconnected">حالة الاشتراك: جاري التحقق...</div>
       <div id="connection-status" class="status-box connection-status disconnected">حالة الميزان: جاري الاتصال...</div>
       <div id="price-connection-status" class="status-box connection-status disconnected">حالة السعر: جاري الاتصال...</div>
     </div>
-       <div class="mode-toggle-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px; gap: 20px;">
-      <button id="mode-sell" class="mode-toggle active">بيع</button>
-      <button id="mode-buy" class="mode-toggle">شراء</button>
+ 
+    <div id="toggle-document" class="document-container">
+      <div>
+    <img src="/cr.png" alt="صورة 1">
+    <p>2053175911</p>
+  </div>
+  <div>
+    <img src="/vat.png" alt="صورة 2">
+    <p>2053175911</p>
+  </div>
+  <div>
+    <img src="/marof.png" alt="صورة 3">
+    <p>معروف</p>
+  </div>
     </div>
   </div>
- <!-- Version number in bottom left corner -->
-  <div style="
+</div>
+  </div>
+  <span id="cost-per-gram-bottom" class="cost-per-gram-bottom" style="
     position: fixed;
-    left: 8px;
-    bottom: 6px;
+    left: 6px;
+    bottom: 4px;
     font-size: 0.85rem;
     color: #888;
-    opacity: 0.7;
+    opacity: 0.5;
     z-index: 9999;
     font-family: 'Tajawal', sans-serif;
     pointer-events: none;
   ">
-    Version 1.0.0
-  </div>
-  <!-- <script type="module" src="js/script.js"></script> -->
-  <!-- <script type="module" src="js/app.js"></script> -->
+    V: -- 
+  </span>
+  <span class="cost-per-gram-bottom" style="
+    position: fixed;
+    right: calc(50% - 25%);
+    bottom: 4px;
+    font-size: 0.85rem;
+    color: #888;
+    opacity: 0.5;
+    z-index: 9999;
+    font-family: 'Tajawal', sans-serif;
+    pointer-events: none;
+    text-align: center;
+  ">
+    هذه الحاسبة تُستخدم لتقدير سعر القطعة بناءً على وزنها، مصنعية التاجر، وسعر الذهب اللحظي.
+  </span>
+
   <script type="module" src="js/main.js"></script>
     
   
