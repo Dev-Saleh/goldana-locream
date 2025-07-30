@@ -82,6 +82,7 @@
 
 /* Settings Page Specific Styles */
 .settings-container {
+  display: flex;
   background-color: rgba(255, 255, 255, 0.92);
   border-radius: var(--radius);
   border: 1px solid var(--border);
@@ -91,6 +92,8 @@
   backdrop-filter: var(--backdrop-filter);
   background-image: var(--bg-overlay);
   overflow-y: auto;
+  gap: 1rem;
+  flex-direction: column;
 }
 
 .dark-theme .settings-container {
@@ -240,12 +243,27 @@ input[type="checkbox"]:checked + .toggle-switch:after {
       border-radius: var(--input-radius);
       border: var(--border-width) solid var(--input-border);
       background: #fff;
-      color: var(--foreground);
+      color: #111827;
       font-size: 1rem;
       transition: border var(--transition), box-shadow var(--transition);
       outline: none;
     }
     .input-group input[type="number"]:focus {
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+    }
+    .input-group input[type="text"] {
+      width: 120px;
+      padding: 7px 10px;
+      border-radius: var(--input-radius);
+      border: var(--border-width) solid var(--input-border);
+      background: #fff;
+      color: #111827;
+      font-size: 1rem;
+      transition: border var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .input-group input[type="text"]:focus {
       border: 1.5px solid var(--accent);
       box-shadow: 0 2px 8px rgba(251,191,36,0.08);
     }
@@ -320,7 +338,7 @@ input[type="checkbox"]:checked + .toggle-switch:after {
       align-items: center;
     }
     .design-tab {
-      padding: 7px 18px;
+      padding: 7px 25px;
       border-radius: 8px 8px 0 0;
       background: var(--input-bg);
       color: var(--accent);
@@ -389,7 +407,7 @@ input[type="checkbox"]:checked + .toggle-switch:after {
       border-radius: var(--input-radius);
       border: var(--border-width) solid var(--input-border);
       background: #fff;
-      color: var(--foreground);
+      color: #111827;
       font-size: 1rem;
       transition: border var(--transition), box-shadow var(--transition);
       outline: none;
@@ -473,20 +491,25 @@ input[type="checkbox"]:checked + .toggle-switch:after {
   <div class="settings-container">
     <h1>إعدادات النظام</h1>
     <div class="actions">
-      <button onclick="saveSettings()">حفظ الإعدادات</button>
+      <button id="save-btn">حفظ الإعدادات</button>
       <button onclick="window.location.href='/index.html'">العودة للرئيسية</button>
     </div>
     <div class="section">
       <div class="section-title">إعدادات الشراء والبيع</div>
       <div class="input-group">
         <label for="buy-discount">خصم الشراء (بالريال لكل جرام):</label>
-        <input type="number" id="buy-discount" value="20" min="0" step="0.1">
+        <input type="number" id="buy-discount" value="20" min="0" step="1">
       </div>
       <div class="input-group">
         <label for="fluctuation-range">مدى تذبذب السعر (ريال):</label>
-        <input type="number" id="fluctuation-range" value="1" min="0" step="0.1">
+        <input type="number" id="fluctuation-range" value="1" min="0" step="1">
+      </div>
+      <div class="input-group">
+        <label for="fixed-manufacturing-fee">مصنعية ثابتة للأوزان أقل من 1 جرام (ريال):</label>
+        <input type="number" id="fixed-manufacturing-fee" value="500" min="0" step="1">
       </div>
     </div>
+   
     <div class="section">
       <div class="section-title">إعدادات المصنعية لكل عيار</div>
       <div class="karat-ranges">
@@ -495,7 +518,7 @@ input[type="checkbox"]:checked + .toggle-switch:after {
           <div class="karat-content">
             <div class="design-tabs-container" id="design-tabs-18"></div>
             <div id="ranges-18"></div>
-            <button class="add-range-btn" id="add-range-18" onclick="addRange(18)">➕ إضافة مدى</button>
+            <button class="add-range-btn" id="add-range-18">➕ إضافة مدى</button>
           </div>
         </div>
         <div id="karat-21" class="karat-section collapsible">
@@ -503,7 +526,7 @@ input[type="checkbox"]:checked + .toggle-switch:after {
           <div class="karat-content">
             <div class="design-tabs-container" id="design-tabs-21"></div>
             <div id="ranges-21"></div>
-            <button class="add-range-btn" id="add-range-21" onclick="addRange(21)">➕ إضافة مدى</button>
+            <button class="add-range-btn" id="add-range-21" >➕ إضافة مدى</button>
           </div>
         </div>
         <div id="karat-24" class="karat-section collapsible">
@@ -511,13 +534,24 @@ input[type="checkbox"]:checked + .toggle-switch:after {
           <div class="karat-content">
             <div class="design-tabs-container" id="design-tabs-24"></div>
             <div id="ranges-24"></div>
-            <button class="add-range-btn" id="add-range-24" onclick="addRange(24)">➕ إضافة مدى</button>
+            <button class="add-range-btn" id="add-range-24" >➕ إضافة مدى</button>
           </div>
         </div>
       </div>
     </div>
+    <div class="section">
+      <div class="section-title">معلومات الشركة</div>
+      <div class="input-group">
+        <label for="cr-number">رقم السجل التجاري:</label>
+        <input type="text" id="cr-number" value="" placeholder="أدخل رقم السجل التجاري">
+      </div>
+      <div class="input-group">
+        <label for="vat-number">الرقم الضريبي:</label>
+        <input type="text" id="vat-number" value="" placeholder="أدخل الرقم الضريبي">
+      </div>
+    </div>
   </div>
-  <script type="module" src="js/settings.js"></script>
+  <script type="module" src="js/settings.js" defer></script>
   <script>
     // Theme toggle logic
     const themeToggle = document.getElementById('theme-toggle');
